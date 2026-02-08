@@ -187,18 +187,31 @@ The system follows a layered architecture approach:
 
 ### Sustainability Service
 
-**Responsibility:** Sustainable farming guidance, carbon credit tracking, and alternative income opportunity identification.
+**Responsibility:** Sustainable farming guidance, carbon credit tracking, environmental impact monitoring, and alternative income opportunity identification.
 
 **Technology:** Python with data analytics libraries, integration with environmental APIs
 
 **Key APIs:**
-- `GET /sustainability/practices/{cropType}` - Sustainable practices
-- `POST /sustainability/carbon-tracking` - Track carbon impact
+- `GET /sustainability/practices/{cropType}` - Sustainable practices for specific crops
+- `POST /sustainability/carbon-tracking` - Track carbon impact and estimate credits
 - `GET /sustainability/income-opportunities` - Alternative income ideas
-- `GET /sustainability/government-schemes` - Available schemes
+- `GET /sustainability/government-schemes` - Available environmental schemes
+- `GET /sustainability/score/{farmerId}` - Personalized sustainability score (0-100)
+- `POST /sustainability/crop-rotation` - Get crop rotation recommendations
+- `GET /sustainability/water-footprint/{cropType}` - Water usage estimates
+- `GET /sustainability/stubble-alternatives` - Stubble management alternatives with income potential
+
+**Key Features:**
+- **Sustainability Score**: Gamified 0-100 score based on farming practices
+- **Crop Rotation Planner**: Scientific rotation patterns to restore soil nutrients
+- **Organic Transition Guide**: Step-by-step organic farming adoption
+- **Water Conservation**: Drip irrigation, rainwater harvesting recommendations
+- **Stubble Management**: Biogas, mulching, mushroom cultivation from crop residue
+- **Carbon Credit Estimation**: Potential earnings from sustainable practices
+- **Biodiversity Recommendations**: Companion planting, pollinator-friendly crops
 
 **Inputs:** Farming practices, crop data, location, farmer profile
-**Outputs:** Sustainability recommendations, carbon credit estimates, scheme information
+**Outputs:** Sustainability recommendations, carbon credit estimates, scheme information, scores
 
 **Scaling Considerations:** Batch processing for carbon calculations, scheme data caching
 
@@ -218,6 +231,60 @@ The system follows a layered architecture approach:
 **Outputs:** Analytics dashboards, impact reports, performance insights
 
 **Scaling Considerations:** Event streaming, data aggregation pipelines, privacy-preserving analytics
+
+### Farmer Welfare Service
+
+**Responsibility:** Farmer distress detection, mental health support integration, financial guidance, and crisis intervention.
+
+**Technology:** Node.js with sentiment analysis, integration with helpline APIs
+
+**Key APIs:**
+- `GET /welfare/helplines` - Get relevant helplines (Kisan Call Center, mental health)
+- `POST /welfare/distress-check` - Analyze farmer interactions for distress indicators
+- `GET /welfare/financial-resources/{farmerId}` - Debt management and loan information
+- `POST /welfare/insurance-claim-guide` - PM Fasal Bima Yojana claim assistance
+- `GET /welfare/loan-comparison` - Compare loan options and interest rates
+- `POST /welfare/warm-handoff` - Initiate warm handoff to helpline with context
+
+**Key Features:**
+- **Distress Detection**: Analyze patterns (crop failures, low engagement, debt mentions)
+- **One-Tap Helpline**: Voice-based direct connection to Kisan Call Center (1800-180-1551)
+- **Debt Counseling**: Financial restructuring information and resources
+- **Insurance Guidance**: Step-by-step insurance claim assistance
+- **Warm Handoff**: Transfer farmer context to helpline operators
+
+**Inputs:** Farmer interactions, financial data, crop failure events
+**Outputs:** Support resources, helpline connections, financial guidance
+
+**Scaling Considerations:** Sensitive data encryption, audit logging for compliance
+
+### Government Scheme Service
+
+**Responsibility:** Government scheme discovery, eligibility matching, and application assistance for Indian farmers.
+
+**Technology:** Node.js with web scraping capabilities, integration with government APIs
+
+**Key APIs:**
+- `GET /schemes/eligible/{farmerId}` - Get eligible schemes based on profile
+- `GET /schemes/pm-kisan/status/{aadhaar}` - Check PM-KISAN benefit status
+- `GET /schemes/soil-health-card/{farmerId}` - Fetch Soil Health Card data
+- `GET /schemes/msp-announcements` - Latest MSP announcements
+- `POST /schemes/apply-assistance` - Get application assistance
+- `GET /schemes/by-state/{stateCode}` - State-specific schemes
+- `GET /schemes/subsidies/{category}` - Available subsidies (seeds, fertilizer, equipment)
+
+**Key Features:**
+- **Scheme Matcher**: Match 50+ central and state schemes to farmer profile
+- **PM-KISAN Tracker**: Check installment status and resolve issues
+- **Soil Health Integration**: Use Soil Health Card data for recommendations
+- **MSP Alerts**: Immediate notifications for MSP crop announcements
+- **e-NAM Integration**: Facilitate online mandi trading
+- **Subsidy Calculator**: Estimate subsidy amounts for various schemes
+
+**Inputs:** Farmer profile, Aadhaar number (optional), location, crop data
+**Outputs:** Eligible schemes, application guides, status updates
+
+**Scaling Considerations:** Government API rate limiting, data caching, regional scheme updates
 
 ## Data Models
 

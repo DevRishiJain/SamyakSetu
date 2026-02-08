@@ -127,3 +127,65 @@ The platform serves small and marginal farmers, many of whom have limited digita
 3. WHEN data is collected THEN the system SHALL maintain farmer privacy while generating aggregate insights
 4. IF performance issues are detected THEN the system SHALL automatically alert administrators
 5. WHEN impact reports are generated THEN the system SHALL provide insights for continuous improvement and stakeholder reporting
+
+### Requirement 11: Enhanced Sustainability and Environmental Impact
+
+**User Story:** As a farmer, I want to adopt sustainable farming practices and track my environmental impact, so that I can protect my land for future generations while potentially earning additional income through carbon credits.
+
+#### Acceptance Criteria
+
+1. WHEN a farmer requests sustainability guidance THEN the system SHALL provide a personalized sustainable farming score with actionable improvement steps
+2. WHEN crop rotation is needed THEN the system SHALL recommend scientifically-backed rotation patterns that restore soil nutrients
+3. WHEN a farmer uses chemicals THEN the system SHALL suggest organic/natural alternatives with effectiveness comparisons
+4. IF stubble burning season approaches THEN the system SHALL provide alternative income-generating uses for crop residue (biogas, mulching, mushroom cultivation)
+5. WHEN water-intensive crops are selected THEN the system SHALL recommend water-saving irrigation techniques and rainwater harvesting methods
+6. WHEN calculating carbon footprint THEN the system SHALL estimate potential carbon credit earnings and connect farmers to carbon credit marketplaces
+7. IF biodiversity opportunities exist THEN the system SHALL suggest companion planting and pollinator-friendly crops
+
+### Requirement 12: Farmer Welfare and Distress Support
+
+**User Story:** As a farmer facing financial or emotional distress, I want access to support resources and helplines, so that I can get help during difficult times.
+
+#### Acceptance Criteria
+
+1. WHEN the system detects distress indicators (repeated crop failures, debt mentions, low engagement) THEN the system SHALL proactively offer support resources in a sensitive manner
+2. WHEN a farmer requests help THEN the system SHALL provide immediate access to Kisan Call Center (1800-180-1551) and mental health helplines via voice
+3. WHEN financial stress is indicated THEN the system SHALL provide information on debt restructuring, loan moratoriums, and government relief schemes
+4. IF crop failure occurs THEN the system SHALL guide farmers through insurance claim processes (PM Fasal Bima Yojana)
+5. WHEN connecting to helplines THEN the system SHALL support warm handoff with farmer context to reduce explanation burden
+
+### Requirement 13: Financial Literacy and Debt Management
+
+**User Story:** As a farmer, I want guidance on managing my finances, loans, and accessing government benefits, so that I can improve my financial stability and avoid debt traps.
+
+#### Acceptance Criteria
+
+1. WHEN a farmer queries financial information THEN the system SHALL explain Kisan Credit Card benefits, interest rates, and application process
+2. WHEN PM-KISAN installments are due THEN the system SHALL notify farmers and help check benefit status
+3. WHEN taking loans THEN the system SHALL provide interest rate comparisons and highlight predatory lending risks
+4. IF government subsidies are available THEN the system SHALL guide farmers through application processes with voice assistance
+5. WHEN seasonal income is received THEN the system SHALL suggest savings and investment options suitable for farmers
+
+### Requirement 14: Regional Outbreak and Emergency Alerts
+
+**User Story:** As a farmer, I want early warnings about pest/disease outbreaks in my region, so that I can take preventive measures before my crops are affected.
+
+#### Acceptance Criteria
+
+1. WHEN pest or disease is reported by community members THEN the system SHALL analyze patterns and alert nearby farmers
+2. WHEN outbreak risk is high THEN the system SHALL provide preventive treatment recommendations before spread
+3. WHEN drought or flood warnings are issued THEN the system SHALL provide emergency preparedness checklists specific to current crops
+4. IF locust swarm alerts are issued THEN the system SHALL provide real-time tracking and protection measures
+5. WHEN emergency occurs THEN the system SHALL connect farmers with disaster relief schemes and compensation programs
+
+### Requirement 15: Government Scheme Integration (India-Specific)
+
+**User Story:** As an Indian farmer, I want to easily access and apply for government schemes relevant to me, so that I can benefit from available subsidies and support programs.
+
+#### Acceptance Criteria
+
+1. WHEN checking eligibility THEN the system SHALL match farmer profile with 50+ central and state government schemes
+2. WHEN Soil Health Card data is available THEN the system SHALL integrate and use it for personalized recommendations
+3. WHEN e-NAM is relevant THEN the system SHALL facilitate direct online mandi trading with price comparisons
+4. IF MSP announcements are made THEN the system SHALL immediately notify farmers growing eligible crops
+5. WHEN PM Kisan Samman Nidhi installments are due THEN the system SHALL help farmers verify payment status and resolve issues
