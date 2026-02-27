@@ -1,3 +1,5 @@
+// All rights reserved Samyak-Setu
+
 package controllers
 
 import (
