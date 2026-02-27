@@ -1,0 +1,22 @@
+# Binaries
+/app
+*.exe
+
+# Environment
+.env
+
+# Uploads
+/uploads/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Go
+vendor/
+*.test
+*.out

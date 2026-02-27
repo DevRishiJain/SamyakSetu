@@ -1,3 +1,10 @@
 {
-    "kiroAgent.configureMCP": "Disabled"
+    "kiroAgent.configureMCP": "Disabled",
+    "go.goroot": "/snap/go/11067",
+    "go.alternateTools": {
+        "go": "/snap/bin/go"
+    },
+    "go.toolsEnvVars": {
+        "PATH": "/snap/bin:${env:PATH}"
+    }
 }

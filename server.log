@@ -1,0 +1,25 @@
+2026/02/28 00:47:14 main.go:24: INFO: Starting SamyakSetu Backend...
+2026/02/28 00:47:14 mongo.go:36: INFO: Connected to MongoDB — database: samyaksetu
+2026/02/28 00:47:14 mongo.go:98: INFO: Database indexes ensured
+2026/02/28 00:47:14 gemini_service.go:29: INFO: Gemini AI client initialized
+2026/02/28 00:47:14 s3_storage_service.go:39: INFO: AWS S3 storage initialized to bucket: samyak-setu-soil
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] POST   /api/auth/send-otp        --> github.com/samyaksetu/backend/controllers.(*AuthController).SendOTP-fm (4 handlers)
+[GIN-debug] POST   /api/signup               --> github.com/samyaksetu/backend/controllers.(*FarmerController).Signup-fm (4 handlers)
+[GIN-debug] PUT    /api/location             --> github.com/samyaksetu/backend/controllers.(*FarmerController).UpdateLocation-fm (4 handlers)
+[GIN-debug] POST   /api/soil/upload          --> github.com/samyaksetu/backend/controllers.(*SoilController).UploadSoil-fm (4 handlers)
+[GIN-debug] POST   /api/chat                 --> github.com/samyaksetu/backend/controllers.(*ChatController).Chat-fm (4 handlers)
+[GIN-debug] GET    /health                   --> github.com/samyaksetu/backend/routes.RegisterRoutes.func1 (4 handlers)
+2026/02/28 00:47:14 main.go:89: INFO: Server listening on port 8080
+2026/02/28 00:47:17 otp_service.go:23: ---------------------------------------------------------
+2026/02/28 00:47:17 otp_service.go:24: [MOCK SMS] To: 9988776655 | Message: Your SamyakSetu verification code is: 540993
+2026/02/28 00:47:17 otp_service.go:25: ---------------------------------------------------------
+2026/02/28 00:47:17 auth_controller.go:59: INFO: OTP successfully sent to 9988776655
+2026/02/28 00:47:17 middleware.go:36: INFO: POST /api/auth/send-otp → 200 (17.385626ms)
+2026/02/28 00:47:57 farmer_controller.go:57: WARN: OTP verification failed for 9988776655: invalid or expired OTP
+2026/02/28 00:47:57 middleware.go:36: INFO: POST /api/signup → 401 (9.648994ms)
+2026/02/28 00:47:57 farmer_controller.go:77: INFO: Farmer registered — id=69a1ede5964d732585013ca2 name=Anil phone=9988776655
+2026/02/28 00:47:57 middleware.go:36: INFO: POST /api/signup → 201 (4.008859ms)
