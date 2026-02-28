@@ -73,9 +73,15 @@ func main() {
 	chatRepo := repositories.NewChatRepository(db)
 	otpRepo := repositories.NewOTPRepository(db)
 
+	// Initialize JWT service for session management
+	jwtService := services.NewJWTService(cfg.JWTSecret)
+	if cfg.PrototypeMode {
+		log.Println("INFO: 🧪 PROTOTYPE MODE is ON — master OTP \"000000\" can be used to bypass OTP verification")
+	}
+
 	// Initialize controllers (dependency injection)
 	authCtrl := controllers.NewAuthController(otpRepo, services.NewMockOTPService())
-	farmerCtrl := controllers.NewFarmerController(farmerRepo, otpRepo)
+	farmerCtrl := controllers.NewFarmerController(farmerRepo, otpRepo, jwtService, cfg.PrototypeMode)
 	soilCtrl := controllers.NewSoilController(farmerRepo, soilRepo, aiService, storageService)
 	chatCtrl := controllers.NewChatController(farmerRepo, soilRepo, chatRepo, aiService, weatherService)
 
@@ -86,7 +92,7 @@ func main() {
 	router.Use(middlewares.RequestLogger())
 
 	// Register routes
-	routes.RegisterRoutes(router, authCtrl, farmerCtrl, soilCtrl, chatCtrl)
+	routes.RegisterRoutes(router, authCtrl, farmerCtrl, soilCtrl, chatCtrl, jwtService)
 
 	// Create HTTP server
 	srv := &http.Server{

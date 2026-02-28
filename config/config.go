@@ -24,6 +24,8 @@ type Config struct {
 	BedrockAccessKey    string
 	BedrockSecretKey    string
 	BedrockSessionToken string // In case you use temporary credentials, usually empty for IAM users
+	PrototypeMode       bool   // When true, master OTP "000000" always works, skipping real OTP verification
+	JWTSecret           string // Secret key used to sign and verify JWT tokens
 }
 
 // LoadConfig reads the .env file and returns a Config struct.
@@ -48,6 +50,8 @@ func LoadConfig() *Config {
 		BedrockAccessKey:    getEnv("BEDROCK_AWS_ACCESS_KEY_ID", ""),
 		BedrockSecretKey:    getEnv("BEDROCK_AWS_SECRET_ACCESS_KEY", ""),
 		BedrockSessionToken: getEnv("BEDROCK_AWS_SESSION_TOKEN", ""), // Optional
+		PrototypeMode:       getEnv("PROTOTYPE_MODE", "true") == "true",
+		JWTSecret:           getEnv("JWT_SECRET", "samyaksetu-prototype-secret-2026"),
 	}
 
 	if cfg.GeminiAPIKey == "" && (cfg.BedrockAccessKey == "" || cfg.BedrockSecretKey == "") {

@@ -5,6 +5,8 @@ package routes
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/samyaksetu/backend/controllers"
+	"github.com/samyaksetu/backend/middlewares"
+	"github.com/samyaksetu/backend/services"
 )
 
 // RegisterRoutes sets up all API routes on the Gin engine.
@@ -14,24 +16,27 @@ func RegisterRoutes(
 	farmerCtrl *controllers.FarmerController,
 	soilCtrl *controllers.SoilController,
 	chatCtrl *controllers.ChatController,
+	jwtService *services.JWTService,
 ) {
 	api := router.Group("/api")
 	{
-		// Auth endpoints
+		// ── Public endpoints (no token required) ──
 		api.POST("/auth/send-otp", authCtrl.SendOTP)
-
-		// Farmer endpoints
 		api.POST("/signup", farmerCtrl.Signup)
-		api.PUT("/location", farmerCtrl.UpdateLocation)
+		api.POST("/login", farmerCtrl.Login)
 
-		// Soil endpoints
-		api.POST("/soil/upload", soilCtrl.UploadSoil)
-
-		// Chat endpoints
-		api.POST("/chat", chatCtrl.Chat)
+		// ── Protected endpoints (JWT token required) ──
+		protected := api.Group("")
+		protected.Use(middlewares.JWTAuth(jwtService))
+		{
+			protected.POST("/logout", farmerCtrl.Logout)
+			protected.PUT("/location", farmerCtrl.UpdateLocation)
+			protected.POST("/soil/upload", soilCtrl.UploadSoil)
+			protected.POST("/chat", chatCtrl.Chat)
+		}
 	}
 
-	// Health check
+	// Health check (always public)
 	router.GET("/health", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"status":  "ok",
