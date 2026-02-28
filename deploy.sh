@@ -19,14 +19,17 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-echo "📤 2/3 Uploading new version and variables to EC2..."
+echo "📤 2/4 Stopping old version on EC2..."
+ssh -i "$PEM_KEY" -o StrictHostKeyChecking=no ubuntu@$SERVER_IP "sudo systemctl stop samyak && rm -f /home/ubuntu/$APP_NAME"
+
+echo "📤 3/4 Uploading new version and variables to EC2..."
 scp -i "$PEM_KEY" -o StrictHostKeyChecking=no $APP_NAME .env ubuntu@$SERVER_IP:/home/ubuntu/
 if [ $? -ne 0 ]; then
     echo "❌ Upload failed. Ensure your PEM key path is correct and server is running."
     exit 1
 fi
 
-echo "🔄 3/3 Restarting exactly running background service on AWS..."
+echo "🔄 4/4 Restarting background service on AWS..."
 ssh -i "$PEM_KEY" -o StrictHostKeyChecking=no ubuntu@$SERVER_IP "sudo systemctl restart samyak && sudo systemctl status samyak --no-pager"
 
 echo "🧹 Cleaning up local files..."
