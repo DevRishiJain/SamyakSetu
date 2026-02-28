@@ -23,7 +23,11 @@ The backend was engineered using **Clean Architecture** principles to ensure tha
 
 ## 📡 End-to-End API Documentation
 
-Below are all the endpoints exposed for the frontend. **Base URL:** `http://localhost:8080/api` (or production domain).
+Below are all the endpoints exposed for the frontend. 
+
+**Base URLs:**
+- Local Development: `http://localhost:8080/api`
+- Production (EC2): `http://51.21.199.205:8080/api`
 
 ### 1. Health Check
 Always hit this to ensure the server is alive.
