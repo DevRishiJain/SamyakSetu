@@ -35,12 +35,23 @@ func main() {
 	}
 	defer db.Disconnect()
 
-	// Initialize services
-	geminiService, err := services.NewGeminiService(cfg.GeminiAPIKey)
-	if err != nil {
-		log.Fatalf("FATAL: Gemini service initialization failed: %v", err)
+	// Initialize AI service
+	var aiService services.AIService
+	if cfg.BedrockAccessKey != "" && cfg.BedrockSecretKey != "" {
+		aiService, err = services.NewBedrockService(cfg.BedrockRegion, cfg.BedrockAccessKey, cfg.BedrockSecretKey, cfg.BedrockSessionToken)
+		if err != nil {
+			log.Fatalf("FATAL: Bedrock service initialization failed: %v", err)
+		}
+	} else if cfg.GeminiAPIKey != "" {
+		geminiService, err := services.NewGeminiService(cfg.GeminiAPIKey)
+		if err != nil {
+			log.Fatalf("FATAL: Gemini service initialization failed: %v", err)
+		}
+		defer geminiService.Close()
+		aiService = geminiService
+	} else {
+		log.Fatalf("FATAL: No AI service configured. Set GEMINI_API_KEY or BEDROCK credentials.")
 	}
-	defer geminiService.Close()
 
 	weatherService := services.NewOpenWeatherService(cfg.WeatherAPIKey)
 
@@ -65,8 +76,8 @@ func main() {
 	// Initialize controllers (dependency injection)
 	authCtrl := controllers.NewAuthController(otpRepo, services.NewMockOTPService())
 	farmerCtrl := controllers.NewFarmerController(farmerRepo, otpRepo)
-	soilCtrl := controllers.NewSoilController(farmerRepo, soilRepo, geminiService, storageService)
-	chatCtrl := controllers.NewChatController(farmerRepo, soilRepo, chatRepo, geminiService, weatherService)
+	soilCtrl := controllers.NewSoilController(farmerRepo, soilRepo, aiService, storageService)
+	chatCtrl := controllers.NewChatController(farmerRepo, soilRepo, chatRepo, aiService, weatherService)
 
 	// Setup Gin router
 	router := gin.New()
