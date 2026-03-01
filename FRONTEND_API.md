@@ -273,7 +273,31 @@ Quietly updates the GPS coordinates of the farmer in MongoDB (useful if the fron
 
 ---
 
-### 9. Get Weather & 5-Day Forecast
+### 9. Update Profile Picture
+Uploads a profile picture for the farmer and automatically updates the database. The image is instantly available via an AWS S3 URL.
+
+- **Endpoint**: `PUT /api/profile-pic`
+- **Auth Required**: ✅ Yes (`Authorization: Bearer <token>`)
+- **Content-Type**: `multipart/form-data`
+- **Parameters**:
+  - `profilePic` (file): The actual image file.
+- **cURL Example**:
+  ```bash
+  curl -X PUT http://51.21.199.205:8080/api/profile-pic \
+    -H "Authorization: Bearer YOUR_TOKEN_HERE" \
+    -F "profilePic=@/path/to/my_face.jpg"
+  ```
+- **Success Response** (`200 OK`):
+  ```json
+  {
+      "message": "Profile picture updated successfully",
+      "profilePic": "https://samyak-setu-soil.s3.eu-north-1.amazonaws.com/profiles/1709283728372.jpg"
+  }
+  ```
+
+---
+
+### 10. Get Weather & 5-Day Forecast
 Fetches the **current weather conditions** and a **5-day forecast** (every 3 hours) for the farmer's stored GPS coordinates using OpenWeatherMap.
 
 - **Endpoint**: `GET /api/weather?farmerId=xxx`
@@ -324,7 +348,7 @@ Fetches the **current weather conditions** and a **5-day forecast** (every 3 hou
 
 ---
 
-### 10. SamyakAI — Open Agricultural Chatbot
+### 11. SamyakAI — Open Agricultural Chatbot
 A standalone conversational AI chatbot for farmers. Unlike the `/api/chat` endpoint (which requires a `farmerId` and pulls GPS/soil/weather context), this endpoint is a **general-purpose farming assistant** that any logged-in user can talk to freely.
 
 **SamyakAI only answers topics related to:**
@@ -365,7 +389,7 @@ A standalone conversational AI chatbot for farmers. Unlike the `/api/chat` endpo
 
 ---
 
-### 11. Text-to-Speech (Amazon Polly)
+### 12. Text-to-Speech (Amazon Polly)
 Converts any text (Hindi, English, or Hinglish) into an extremely natural-sounding Indian neural voice (`Kajal`). Returns a public MP3 link that the frontend can instantly play.
 
 - **Endpoint**: `POST /api/voice/tts`
@@ -389,7 +413,7 @@ Converts any text (Hindi, English, or Hinglish) into an extremely natural-soundi
 
 ---
 
-### 12. Auto Speech-to-Text (Amazon Transcribe)
+### 13. Auto Speech-to-Text (Amazon Transcribe)
 Upload a voice note (`.wav`, `.mp3`, `.m4a`, etc.) from the farmer. The backend uses Amazon Transcribe to automatically detect if it is Hindi or English, transcribe it to text, and return the exact text string.
 *(Note: Takes 15-30 seconds to process audio)*
 
@@ -413,7 +437,7 @@ Upload a voice note (`.wav`, `.mp3`, `.m4a`, etc.) from the farmer. The backend 
 
 ---
 
-### 13. End-to-End Voice Chat
+### 14. End-to-End Voice Chat
 The complete conversational pipeline! Send an audio file from the user. The backend will:
 1. Transcribe the audio into text.
 2. Formulate an AI response (restricted to farming topics).

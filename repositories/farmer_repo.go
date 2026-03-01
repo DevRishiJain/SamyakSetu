@@ -80,3 +80,18 @@ func (r *FarmerRepository) UpdateLocation(id primitive.ObjectID, lat, lng float6
 	_, err := r.db.Collection("farmers").UpdateByID(ctx, id, update)
 	return err
 }
+
+// UpdateProfilePic updates a farmer's profile picture URL.
+func (r *FarmerRepository) UpdateProfilePic(id primitive.ObjectID, picURL string) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	update := bson.M{
+		"$set": bson.M{
+			"profilePic": picURL,
+		},
+	}
+
+	_, err := r.db.Collection("farmers").UpdateByID(ctx, id, update)
+	return err
+}

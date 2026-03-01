@@ -34,6 +34,7 @@ func RegisterRoutes(
 		{
 			protected.POST("/logout", farmerCtrl.Logout)
 			protected.PUT("/location", farmerCtrl.UpdateLocation)
+			protected.PUT("/profile-pic", farmerCtrl.UploadProfilePic)
 			protected.POST("/soil/upload", soilCtrl.UploadSoil)
 			protected.POST("/chat", chatCtrl.Chat)
 			protected.GET("/weather", weatherCtrl.GetWeather)

@@ -16,11 +16,12 @@ type Location struct {
 
 // Farmer represents a registered farmer in the system.
 type Farmer struct {
-	ID        primitive.ObjectID `json:"id" bson:"_id,omitempty"`
-	Name      string             `json:"name" bson:"name"`
-	Phone     string             `json:"phone" bson:"phone"`
-	Location  Location           `json:"location" bson:"location"`
-	CreatedAt time.Time          `json:"createdAt" bson:"createdAt"`
+	ID         primitive.ObjectID `json:"id" bson:"_id,omitempty"`
+	Name       string             `json:"name" bson:"name"`
+	Phone      string             `json:"phone" bson:"phone"`
+	ProfilePic string             `json:"profilePic,omitempty" bson:"profilePic,omitempty"`
+	Location   Location           `json:"location" bson:"location"`
+	CreatedAt  time.Time          `json:"createdAt" bson:"createdAt"`
 }
 
 // SignupRequest is the expected input for farmer registration.

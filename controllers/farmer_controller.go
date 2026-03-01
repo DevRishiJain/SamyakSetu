@@ -16,19 +16,21 @@ import (
 
 // FarmerController handles HTTP requests related to farmers.
 type FarmerController struct {
-	farmerRepo    *repositories.FarmerRepository
-	otpRepo       *repositories.OTPRepository
-	jwtService    *services.JWTService
-	prototypeMode bool
+	farmerRepo     *repositories.FarmerRepository
+	otpRepo        *repositories.OTPRepository
+	jwtService     *services.JWTService
+	storageService services.StorageService
+	prototypeMode  bool
 }
 
 // NewFarmerController creates a new FarmerController instance.
-func NewFarmerController(farmerRepo *repositories.FarmerRepository, otpRepo *repositories.OTPRepository, jwtService *services.JWTService, prototypeMode bool) *FarmerController {
+func NewFarmerController(farmerRepo *repositories.FarmerRepository, otpRepo *repositories.OTPRepository, jwtService *services.JWTService, storageService services.StorageService, prototypeMode bool) *FarmerController {
 	return &FarmerController{
-		farmerRepo:    farmerRepo,
-		otpRepo:       otpRepo,
-		jwtService:    jwtService,
-		prototypeMode: prototypeMode,
+		farmerRepo:     farmerRepo,
+		otpRepo:        otpRepo,
+		jwtService:     jwtService,
+		storageService: storageService,
+		prototypeMode:  prototypeMode,
 	}
 }
 
@@ -96,12 +98,13 @@ func (fc *FarmerController) Signup(c *gin.Context) {
 
 	log.Printf("INFO: Farmer registered — id=%s name=%s phone=%s", farmer.ID.Hex(), farmer.Name, farmer.Phone)
 	c.JSON(http.StatusCreated, gin.H{
-		"id":        farmer.ID.Hex(),
-		"name":      farmer.Name,
-		"phone":     farmer.Phone,
-		"location":  farmer.Location,
-		"createdAt": farmer.CreatedAt,
-		"token":     token,
+		"id":         farmer.ID.Hex(),
+		"name":       farmer.Name,
+		"phone":      farmer.Phone,
+		"location":   farmer.Location,
+		"profilePic": farmer.ProfilePic,
+		"createdAt":  farmer.CreatedAt,
+		"token":      token,
 	})
 }
 
@@ -151,11 +154,12 @@ func (fc *FarmerController) Login(c *gin.Context) {
 
 	log.Printf("INFO: Farmer logged in — id=%s name=%s phone=%s", farmer.ID.Hex(), farmer.Name, farmer.Phone)
 	c.JSON(http.StatusOK, gin.H{
-		"id":       farmer.ID.Hex(),
-		"name":     farmer.Name,
-		"phone":    farmer.Phone,
-		"location": farmer.Location,
-		"token":    token,
+		"id":         farmer.ID.Hex(),
+		"name":       farmer.Name,
+		"phone":      farmer.Phone,
+		"location":   farmer.Location,
+		"profilePic": farmer.ProfilePic,
+		"token":      token,
 	})
 }
 
@@ -208,5 +212,50 @@ func (fc *FarmerController) UpdateLocation(c *gin.Context) {
 			Latitude:  req.Latitude,
 			Longitude: req.Longitude,
 		},
+	})
+}
+
+// UploadProfilePic handles PUT /api/profile-pic
+// Accepts a file upload and updates the farmer's profile picture.
+func (fc *FarmerController) UploadProfilePic(c *gin.Context) {
+	// Let's get the farmerID from the context since it's a protected route
+	farmerIDVal, exists := c.Get("farmerId")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized: Farmer ID not found in context"})
+		return
+	}
+	farmerIDStr := farmerIDVal.(string)
+
+	farmerID, err := primitive.ObjectIDFromHex(farmerIDStr)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid farmer ID format"})
+		return
+	}
+
+	file, err := c.FormFile("profilePic")
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to get profile picture from request: " + err.Error()})
+		return
+	}
+
+	// Upload to storage service
+	fileURL, err := fc.storageService.SaveFile(file, "profiles")
+	if err != nil {
+		log.Printf("ERROR: Failed to save profile pic to storage for farmer %s: %v", farmerIDStr, err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to upload profile picture"})
+		return
+	}
+
+	// Update DB
+	if err := fc.farmerRepo.UpdateProfilePic(farmerID, fileURL); err != nil {
+		log.Printf("ERROR: Failed to update profile pic in DB for farmer %s: %v", farmerIDStr, err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update profile picture in database"})
+		return
+	}
+
+	log.Printf("INFO: Profile picture updated — farmer=%s url=%s", farmerIDStr, fileURL)
+	c.JSON(http.StatusOK, gin.H{
+		"message":    "Profile picture updated successfully",
+		"profilePic": fileURL,
 	})
 }

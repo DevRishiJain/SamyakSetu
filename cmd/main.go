@@ -81,7 +81,7 @@ func main() {
 
 	// Initialize controllers (dependency injection)
 	authCtrl := controllers.NewAuthController(otpRepo, services.NewMockOTPService())
-	farmerCtrl := controllers.NewFarmerController(farmerRepo, otpRepo, jwtService, cfg.PrototypeMode)
+	farmerCtrl := controllers.NewFarmerController(farmerRepo, otpRepo, jwtService, storageService, cfg.PrototypeMode)
 	soilCtrl := controllers.NewSoilController(farmerRepo, soilRepo, aiService, storageService)
 	chatCtrl := controllers.NewChatController(farmerRepo, soilRepo, chatRepo, aiService, weatherService)
 	weatherCtrl := controllers.NewWeatherController(farmerRepo, weatherService)
