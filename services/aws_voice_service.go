@@ -23,9 +23,11 @@ type AWSVoiceService struct {
 
 // NewAWSVoiceService initializes a new AWSVoiceService with Polly.
 func NewAWSVoiceService(region, accessKey, secretKey string, storageService StorageService) (*AWSVoiceService, error) {
+	// Force region to ap-south-1 (Mumbai) because Kajal Neural voice is widely supported there,
+	// while it might throw "engine not supported" in regions like eu-north-1 (Stockholm).
 	creds := credentials.NewStaticCredentialsProvider(accessKey, secretKey, "")
 	cfg, err := config.LoadDefaultConfig(context.TODO(),
-		config.WithRegion(region),
+		config.WithRegion("ap-south-1"),
 		config.WithCredentialsProvider(creds),
 	)
 	if err != nil {
@@ -33,7 +35,7 @@ func NewAWSVoiceService(region, accessKey, secretKey string, storageService Stor
 	}
 
 	pollyClient := polly.NewFromConfig(cfg)
-	log.Println("INFO: AWS Voice Service initialized (Amazon Polly)")
+	log.Println("INFO: AWS Voice Service initialized (Amazon Polly) in ap-south-1")
 
 	return &AWSVoiceService{
 		pollyClient:    pollyClient,
