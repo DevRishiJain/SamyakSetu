@@ -324,6 +324,47 @@ Fetches the **current weather conditions** and a **5-day forecast** (every 3 hou
 
 ---
 
+### 10. SamyakAI — Open Agricultural Chatbot
+A standalone conversational AI chatbot for farmers. Unlike the `/api/chat` endpoint (which requires a `farmerId` and pulls GPS/soil/weather context), this endpoint is a **general-purpose farming assistant** that any logged-in user can talk to freely.
+
+**SamyakAI only answers topics related to:**
+- Farming, agriculture, crops, seeds, harvesting, irrigation, fertilizers
+- Soil health, composting, organic farming
+- Pest control, plant diseases, weed management
+- Livestock, dairy, poultry, fisheries
+- Government farming schemes, MSP, crop insurance
+- **Farmer mental health**, stress, emotional support
+- Market prices, mandi rates, selling strategies
+
+**It will politely refuse** any non-farming topic (e.g., cricket, politics, movies).
+
+- **Endpoint**: `POST /api/samyakai`
+- **Auth Required**: ✅ Yes (`Authorization: Bearer <token>`)
+- **Content-Type**: `application/json`
+- **Parameters**:
+  - `message` (string): The farmer's question or message.
+- **cURL Example (Hindi)**:
+  ```bash
+  curl -X POST http://51.21.199.205:8080/api/samyakai \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer YOUR_TOKEN_HERE" \
+    -d '{"message": "मेरी गेहूं की फसल में पीलापन आ रहा है, क्या करें?"}'
+  ```
+- **Success Response** (`200 OK`):
+  ```json
+  {
+      "reply": "नमस्ते किसान भाई! गेहूं में पीलापन आना कई कारणों से हो सकता है: 1. नाइट्रोजन की कमी..."
+  }
+  ```
+- **Non-Farming Topic (Polite Refusal)**:
+  ```json
+  {
+      "reply": "Namaste! I am SamyakAI, your farming companion. I can only help with agriculture, crops, farming techniques, and farmer well-being. Please ask me something related to farming! 🌾"
+  }
+  ```
+
+---
+
 ## ❌ Error Responses
 
 All error responses follow the same format:

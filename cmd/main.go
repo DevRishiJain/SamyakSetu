@@ -85,6 +85,7 @@ func main() {
 	soilCtrl := controllers.NewSoilController(farmerRepo, soilRepo, aiService, storageService)
 	chatCtrl := controllers.NewChatController(farmerRepo, soilRepo, chatRepo, aiService, weatherService)
 	weatherCtrl := controllers.NewWeatherController(farmerRepo, weatherService)
+	samyakAICtrl := controllers.NewSamyakAIController(aiService)
 
 	// Setup Gin router
 	router := gin.New()
@@ -93,7 +94,7 @@ func main() {
 	router.Use(middlewares.RequestLogger())
 
 	// Register routes
-	routes.RegisterRoutes(router, authCtrl, farmerCtrl, soilCtrl, chatCtrl, weatherCtrl, jwtService)
+	routes.RegisterRoutes(router, authCtrl, farmerCtrl, soilCtrl, chatCtrl, weatherCtrl, samyakAICtrl, jwtService)
 
 	// Create HTTP server
 	srv := &http.Server{
