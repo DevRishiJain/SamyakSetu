@@ -365,6 +365,30 @@ A standalone conversational AI chatbot for farmers. Unlike the `/api/chat` endpo
 
 ---
 
+### 11. Text-to-Speech (Amazon Polly)
+Converts any text (Hindi, English, or Hinglish) into an extremely natural-sounding Indian neural voice (`Kajal`). Returns a public MP3 link that the frontend can instantly play.
+
+- **Endpoint**: `POST /api/voice/tts`
+- **Auth Required**: ✅ Yes (`Authorization: Bearer <token>`)
+- **Content-Type**: `application/json`
+- **Parameters**:
+  - `text` (string): The text you want spoken aloud.
+- **cURL Example**:
+  ```bash
+  curl -X POST http://51.21.199.205:8080/api/voice/tts \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer YOUR_TOKEN_HERE" \
+    -d '{"text": "नमस्ते! मैं Samyak AI हूँ। आपकी क्या मदद करूँ?"}'
+  ```
+- **Success Response** (`200 OK`):
+  ```json
+  {
+      "audioUrl": "https://samyak-setu-soil.s3.eu-north-1.amazonaws.com/audio/1709283728372.mp3"
+  }
+  ```
+
+---
+
 ## ❌ Error Responses
 
 All error responses follow the same format:

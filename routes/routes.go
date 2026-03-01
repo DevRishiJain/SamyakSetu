@@ -18,6 +18,7 @@ func RegisterRoutes(
 	chatCtrl *controllers.ChatController,
 	weatherCtrl *controllers.WeatherController,
 	samyakAICtrl *controllers.SamyakAIController,
+	voiceCtrl *controllers.VoiceController,
 	jwtService *services.JWTService,
 ) {
 	api := router.Group("/api")
@@ -37,6 +38,7 @@ func RegisterRoutes(
 			protected.POST("/chat", chatCtrl.Chat)
 			protected.GET("/weather", weatherCtrl.GetWeather)
 			protected.POST("/samyakai", samyakAICtrl.Chat)
+			protected.POST("/voice/tts", voiceCtrl.TextToSpeech)
 		}
 	}
 

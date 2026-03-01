@@ -12,7 +12,7 @@ APP_NAME="samyak-backend"
 
 echo "🚀 Starting Deployment to AWS ($SERVER_IP)..."
 
-echo "📦 1/3 Compiling Go Code for Ubuntu Server..."
+echo "📦 1/4 Compiling Go Code for Ubuntu Server..."
 GOOS=linux GOARCH=amd64 go build -o $APP_NAME cmd/main.go
 if [ $? -ne 0 ]; then
     echo "❌ Build failed. Please fix your Go errors."

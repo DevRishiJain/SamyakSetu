@@ -3,6 +3,7 @@
 package services
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"log"
@@ -82,4 +83,23 @@ func (s *S3StorageService) SaveFile(file *multipart.FileHeader, subDir string) (
 	// Construct public URL
 	publicURL := fmt.Sprintf("https://%s.s3.%s.amazonaws.com/%s", s.bucketName, s.region, s3Key)
 	return publicURL, nil
+}
+
+// SaveBytes creates a file from raw bytes in S3 and returns the public URL.
+func (s *S3StorageService) SaveBytes(data []byte, contentType, ext, subDir string) (string, error) {
+	uniqueName := fmt.Sprintf("%d%s", time.Now().UnixNano(), ext)
+	s3Key := fmt.Sprintf("%s/%s", subDir, uniqueName)
+
+	_, err := s.client.PutObject(context.TODO(), &s3.PutObjectInput{
+		Bucket:      aws.String(s.bucketName),
+		Key:         aws.String(s3Key),
+		Body:        bytes.NewReader(data),
+		ContentType: aws.String(contentType),
+	})
+
+	if err != nil {
+		return "", fmt.Errorf("failed to upload bytes to S3: %w", err)
+	}
+
+	return fmt.Sprintf("https://%s.s3.%s.amazonaws.com/%s", s.bucketName, s.region, s3Key), nil
 }

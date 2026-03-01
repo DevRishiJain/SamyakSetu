@@ -72,3 +72,20 @@ func (s *LocalStorageService) SaveFile(file *multipart.FileHeader, subDir string
 	// Return subDir/filename path
 	return filepath.Join(subDir, uniqueName), nil
 }
+
+// SaveBytes creates a file from raw bytes on the local filesystem.
+func (s *LocalStorageService) SaveBytes(data []byte, contentType, ext, subDir string) (string, error) {
+	targetDir := filepath.Join(s.basePath, subDir)
+	if err := os.MkdirAll(targetDir, 0755); err != nil {
+		return "", fmt.Errorf("failed to create directory %s: %w", targetDir, err)
+	}
+
+	uniqueName := fmt.Sprintf("%d%s", time.Now().UnixNano(), ext)
+	filePath := filepath.Join(targetDir, uniqueName)
+
+	if err := os.WriteFile(filePath, data, 0644); err != nil {
+		return "", fmt.Errorf("failed to write bytes to file: %w", err)
+	}
+
+	return filepath.Join(subDir, uniqueName), nil
+}

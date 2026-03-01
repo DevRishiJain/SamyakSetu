@@ -87,6 +87,13 @@ func main() {
 	weatherCtrl := controllers.NewWeatherController(farmerRepo, weatherService)
 	samyakAICtrl := controllers.NewSamyakAIController(aiService)
 
+	var voiceService services.VoiceService
+	voiceService, err = services.NewAWSVoiceService(cfg.AWSRegion, cfg.AWSAccessKey, cfg.AWSSecretKey, storageService)
+	if err != nil {
+		log.Printf("WARN: Failed to initialize AWS Voice Service: %v (TTS might not work)", err)
+	}
+	voiceCtrl := controllers.NewVoiceController(voiceService)
+
 	// Setup Gin router
 	router := gin.New()
 	router.Use(gin.Recovery())
@@ -94,7 +101,7 @@ func main() {
 	router.Use(middlewares.RequestLogger())
 
 	// Register routes
-	routes.RegisterRoutes(router, authCtrl, farmerCtrl, soilCtrl, chatCtrl, weatherCtrl, samyakAICtrl, jwtService)
+	routes.RegisterRoutes(router, authCtrl, farmerCtrl, soilCtrl, chatCtrl, weatherCtrl, samyakAICtrl, voiceCtrl, jwtService)
 
 	// Create HTTP server
 	srv := &http.Server{

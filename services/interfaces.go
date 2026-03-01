@@ -60,4 +60,15 @@ type WeatherService interface {
 type StorageService interface {
 	// SaveFile stores an uploaded file and returns the stored file path.
 	SaveFile(file *multipart.FileHeader, subDir string) (string, error)
+
+	// SaveBytes stores raw bytes as a file and returns the stored file path.
+	SaveBytes(data []byte, contentType, ext, subDir string) (string, error)
+}
+
+// VoiceService defines the contract for speech-to-text and text-to-speech.
+type VoiceService interface {
+	// TextToSpeech converts text to speech and returns the public URL of the audio file.
+	TextToSpeech(text string) (string, error)
+	// SpeechToText converts speech to text. It expects raw audio bytes.
+	SpeechToText(audioData []byte, ext string) (string, error)
 }
