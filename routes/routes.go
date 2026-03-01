@@ -16,6 +16,7 @@ func RegisterRoutes(
 	farmerCtrl *controllers.FarmerController,
 	soilCtrl *controllers.SoilController,
 	chatCtrl *controllers.ChatController,
+	weatherCtrl *controllers.WeatherController,
 	jwtService *services.JWTService,
 ) {
 	api := router.Group("/api")
@@ -33,6 +34,7 @@ func RegisterRoutes(
 			protected.PUT("/location", farmerCtrl.UpdateLocation)
 			protected.POST("/soil/upload", soilCtrl.UploadSoil)
 			protected.POST("/chat", chatCtrl.Chat)
+			protected.GET("/weather", weatherCtrl.GetWeather)
 		}
 	}
 

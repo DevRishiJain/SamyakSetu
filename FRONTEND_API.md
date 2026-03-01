@@ -273,6 +273,57 @@ Quietly updates the GPS coordinates of the farmer in MongoDB (useful if the fron
 
 ---
 
+### 9. Get Weather & 5-Day Forecast
+Fetches the **current weather conditions** and a **5-day forecast** (every 3 hours) for the farmer's stored GPS coordinates using OpenWeatherMap.
+
+- **Endpoint**: `GET /api/weather?farmerId=xxx`
+- **Auth Required**: ✅ Yes (`Authorization: Bearer <token>`)
+- **Query Parameters**:
+  - `farmerId` (string): The ObjectID of the registered farmer.
+- **cURL Example**:
+  ```bash
+  curl -X GET "http://51.21.199.205:8080/api/weather?farmerId=69a2f4726f2bd4aa38a6314f" \
+    -H "Authorization: Bearer YOUR_TOKEN_HERE"
+  ```
+- **Success Response** (`200 OK`):
+  ```json
+  {
+      "farmerId": "69a2f4726f2bd4aa38a6314f",
+      "location": {
+          "latitude": 23.2599,
+          "longitude": 77.4126
+      },
+      "current": {
+          "location": "Bhopal",
+          "condition": "Clear",
+          "description": "clear sky",
+          "temperature": 30.63,
+          "feelsLike": 29.12,
+          "tempMin": 30.63,
+          "tempMax": 30.63,
+          "humidity": 25,
+          "windSpeed": 3.5,
+          "icon": "https://openweathermap.org/img/wn/01d@2x.png"
+      },
+      "forecast": [
+          {
+              "dateTime": "2026-03-01 15:00:00",
+              "condition": "Clear",
+              "description": "clear sky",
+              "temperature": 28.99,
+              "tempMin": 26.9,
+              "tempMax": 28.99,
+              "humidity": 35,
+              "windSpeed": 2.05,
+              "icon": "https://openweathermap.org/img/wn/01n@2x.png"
+          }
+      ]
+  }
+  ```
+  > **Note:** The `forecast` array contains up to 40 entries (every 3 hours for 5 days). The `icon` field is a direct URL to the OpenWeatherMap weather icon image — you can use it directly in `<img>` tags.
+
+---
+
 ## ❌ Error Responses
 
 All error responses follow the same format:
