@@ -88,11 +88,11 @@ func main() {
 	samyakAICtrl := controllers.NewSamyakAIController(aiService)
 
 	var voiceService services.VoiceService
-	voiceService, err = services.NewAWSVoiceService(cfg.AWSRegion, cfg.AWSAccessKey, cfg.AWSSecretKey, storageService)
+	voiceService, err = services.NewAWSVoiceService(cfg.AWSRegion, cfg.AWSAccessKey, cfg.AWSSecretKey, cfg.S3BucketName, storageService)
 	if err != nil {
 		log.Printf("WARN: Failed to initialize AWS Voice Service: %v (TTS might not work)", err)
 	}
-	voiceCtrl := controllers.NewVoiceController(voiceService)
+	voiceCtrl := controllers.NewVoiceController(voiceService, aiService)
 
 	// Setup Gin router
 	router := gin.New()

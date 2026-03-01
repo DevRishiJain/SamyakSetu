@@ -39,6 +39,8 @@ func RegisterRoutes(
 			protected.GET("/weather", weatherCtrl.GetWeather)
 			protected.POST("/samyakai", samyakAICtrl.Chat)
 			protected.POST("/voice/tts", voiceCtrl.TextToSpeech)
+			protected.POST("/voice/stt", voiceCtrl.SpeechToText)
+			protected.POST("/voice/chat", voiceCtrl.VoiceChat)
 		}
 	}
 

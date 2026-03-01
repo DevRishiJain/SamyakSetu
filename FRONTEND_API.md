@@ -389,6 +389,59 @@ Converts any text (Hindi, English, or Hinglish) into an extremely natural-soundi
 
 ---
 
+### 12. Auto Speech-to-Text (Amazon Transcribe)
+Upload a voice note (`.wav`, `.mp3`, `.m4a`, etc.) from the farmer. The backend uses Amazon Transcribe to automatically detect if it is Hindi or English, transcribe it to text, and return the exact text string.
+*(Note: Takes 15-30 seconds to process audio)*
+
+- **Endpoint**: `POST /api/voice/stt`
+- **Auth Required**: ✅ Yes (`Authorization: Bearer <token>`)
+- **Content-Type**: `multipart/form-data`
+- **Parameters**:
+  - `audio` (file): The recorded audio file.
+- **cURL Example**:
+  ```bash
+  curl -X POST http://51.21.199.205:8080/api/voice/stt \
+    -H "Authorization: Bearer YOUR_TOKEN_HERE" \
+    -F "audio=@/path/to/voice_note.wav"
+  ```
+- **Success Response** (`200 OK`):
+  ```json
+  {
+      "text": "हैलो सम्यक सेतु हाउ आर यू आप मुझे बता सकते हैं कि मेरी फसल कब उगेगी"
+  }
+  ```
+
+---
+
+### 13. End-to-End Voice Chat
+The complete conversational pipeline! Send an audio file from the user. The backend will:
+1. Transcribe the audio into text.
+2. Formulate an AI response (restricted to farming topics).
+3. Convert the AI response back into speech.
+4. Return both the audio mp3 URL and the text to you instantly!
+
+- **Endpoint**: `POST /api/voice/chat`
+- **Auth Required**: ✅ Yes (`Authorization: Bearer <token>`)
+- **Content-Type**: `multipart/form-data`
+- **Parameters**:
+  - `audio` (file): The recorded audio file.
+- **cURL Example**:
+  ```bash
+  curl -X POST http://51.21.199.205:8080/api/voice/chat \
+    -H "Authorization: Bearer YOUR_TOKEN_HERE" \
+    -F "audio=@/path/to/voice_note.wav"
+  ```
+- **Success Response** (`200 OK`):
+  ```json
+  {
+      "userText": "हैलो सम्यक सेतु हाउ आर यू आप मुझे बता सकते हैं कि मेरी फसल कब उगेगी",
+      "reply": "नमस्ते! मैं SamyakAI हूँ। आपकी फसल को उगने में मौसम और मिट्टी के अनुसार समय लगता है...",
+      "audioUrl": "https://samyak-setu-soil.s3.eu-north-1.amazonaws.com/audio/1709283728372.mp3"
+  }
+  ```
+
+---
+
 ## ❌ Error Responses
 
 All error responses follow the same format:
